@@ -27,14 +27,11 @@ interface FilterParams {
   reversed: boolean;
 }
 
-function getPreparedGoods(
-  goods: string[],
-  { sortField, reversed }: FilterParams,
-) {
-  const preparedGoods = [...goods];
+function prepareGoods(goods: string[], { sortField, reversed }: FilterParams) {
+  const preparedGood = [...goods];
 
   if (sortField) {
-    preparedGoods.sort((good1, good2) => {
+    preparedGood.sort((good1, good2) => {
       switch (sortField) {
         case SortField.ALPHABETICAL:
           return good1.toLowerCase().localeCompare(good2.toLowerCase());
@@ -48,16 +45,16 @@ function getPreparedGoods(
   }
 
   if (reversed) {
-    preparedGoods.reverse();
+    preparedGood.reverse();
   }
 
-  return preparedGoods;
+  return preparedGood;
 }
 
 export const App = () => {
   const [sortField, setSortField] = useState(SortField.NONE);
   const [reversed, setReversed] = useState(false);
-  const visibleGoods = getPreparedGoods(goodsFromServer, {
+  const visibleGoods = prepareGoods(goodsFromServer, {
     sortField,
     reversed,
   });
